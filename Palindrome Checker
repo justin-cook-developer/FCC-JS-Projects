@@ -4,8 +4,8 @@ function palindrome(str) {
   // converts the str to lower case and removes all non-alphanumeric characters
   str = str.toLowerCase().replace(/[\W_]/g, '');
   // compares char at front with char at back, moving inward from each end of str
-  for(var i = 0, len = str.length - 1; i < len/2; i++) {
-    if(str[i] !== str[len-i]) {
+  for(var i = 0, back = str.length - 1; i < back/2; i++) {
+    if(str[i] !== str[back-i]) {
       return false;
     }
   }
