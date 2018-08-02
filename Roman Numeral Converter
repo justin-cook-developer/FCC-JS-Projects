@@ -1,3 +1,4 @@
+// Roman Numeral Converter
 // this function takes a number less than 4,000 as a parameter, and returns the corresponding Roman Numeral 
 
 function convertToRoman(num) {
