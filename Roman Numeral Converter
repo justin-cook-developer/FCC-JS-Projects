@@ -1,0 +1,80 @@
+// this function takes a number less than 4,000 as a parameter, and returns the corresponding Roman Numeral 
+
+function convertToRoman(num) {
+    // decalare variables for num of thousands, num of hundreds, num of tens, num of ones
+    // ex. num = 1999: numThousands = 1, numHundreds = 9, numTens = 9, numOnes = 9 
+    const numThousands = Math.floor(num / 1000);
+    const numHundreds = Math.floor((num - (numThousands * 1000)) / 100);
+    const numTens = Math.floor((num - (numThousands *1000) - (numHundreds * 100)) / 10);
+    const numOnes = Math.floor((num - (numThousands *1000) - (numHundreds * 100) - (numTens * 10)) / 1);
+    
+    // declare a variable to contain Roman Numerals for Thousands
+    let strThousands = '';
+    // for every thousand, add 'M' to strThousands
+    for(let i = 0; i < numThousands; i++) {
+        strThousands += 'M';
+    }
+    
+    // decalre a variable to contain Roman Numerals for Hundreds
+    let strHundreds = '';
+    // assign appropriate Roman Numerals to strHundreds
+    if(numHundreds === 5) {
+        strHundreds += 'D';
+    } else if(numHundreds === 9) {
+        strHundreds += 'CM'
+    } else if(numHundreds === 4) {
+        strHundreds += 'CD';
+    } else if(numHundreds > 5 && numHundreds < 9) {
+        strHundreds += 'D';
+        for(let i = 0; i < (numHundreds - 5); i++) {
+            strHundreds += 'C'
+        }
+    } else if(numHundreds > 0 && numHundreds < 4) {
+        for(let i = 0; i < numHundreds; i++) {
+            strHundreds += 'C'
+        }
+    }
+    
+    // declare a variable to contain Roman Numerals for Tens 
+    let strTens = '';
+    // assign appropriate Roman Numerals to strTens
+    if(numTens === 5) {
+        strTens += 'L';
+    } else if(numTens === 9) {
+        strTens += 'XC';
+    } else if(numTens === 4) {
+        strTens += 'XL';
+    } else if(numTens > 5 && numTens < 9) {
+        strTens += 'L';
+        for(let i = 0; i < (numTens - 5); i++) {
+            strTens += 'X';
+        }
+    } else if(numTens > 0 && numTens < 4) {
+        for(let i = 0; i < numTens; i++) {
+            strTens += 'X';
+        }
+    }
+
+    // decalre a variable to contain Roman Numerals for Ones
+    let strOnes = '';
+    // assign appropriate Roman Numerals to strOnes
+    if(numOnes === 5) {
+        strOnes += 'V';
+    } else if(numOnes === 9) {
+        strOnes += 'IX';
+    } else if(numOnes === 4) {
+        strOnes += 'IV';
+    } else if(numOnes > 5 && numOnes < 9) {
+        strOnes += 'V';
+        for(let i = 0; i < (numOnes - 5); i++) {
+            strOnes += 'I';
+        }
+    } else if(numOnes > 0 && numOnes < 4) {
+        for(let i = 0; i < numOnes; i++) {
+            strOnes += 'I';
+        }
+    }
+    
+    // return all of the Roman Numeral variables combined into a single string
+    return (strThousands + strHundreds + strTens + strOnes);
+}
