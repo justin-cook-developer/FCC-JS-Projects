@@ -1,0 +1,27 @@
+// Telephone Number Validator
+// Tests whether the inputted string matches a valid format for a phone # w/ country code and area code(1555555555)
+// or a phone number w/ only an area code(5555555555)
+
+function telephoneCheck(str) {
+  // remove white space from the str
+  const testStr = str.replace(/\s/g, '');
+
+  // if str contains any invalid characters, return false
+  if(testStr.match(/[*&!#?]/g)) {
+    return false;
+  }
+
+  // test testStr against acceptable formats of a phone number w/o a country code
+  // test testStr against acceptable formats of a phone number w/ a country code by
+  // including `1?` at beginning of each regex
+  if(testStr.match(/^1?\d{3}-\d{3}-\d{4}$/)) {
+    return true;
+  } else if(testStr.match(/^1?\d{10}$/)) {
+    return true;
+  } else if(testStr.match(/^1?\(\d{3}\)\d{3}\-\d{4}$/)) {
+    return true;
+  } 
+  
+  // if testStr does not match a valid phone # format, return false
+  return false;
+}
