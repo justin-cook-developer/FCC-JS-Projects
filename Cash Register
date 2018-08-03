@@ -36,22 +36,24 @@ function checkCashRegister(price, cash, cid) {
     } else if(bill === 'DIME') {
       return [0.10, quantity/0.10];
     } else if(bill === 'NICKEL') {
-      return [0.05, quantity/0.05];
+      return [0.05, Math.round(quantity / 0.05)];
     } else if(bill === 'PENNY') {
       return [0.01, quantity/0.01];
     }
   });
-
+  console.log(newCid);
+  
   // need function to calculate change, if not possible, return null
   function calcChange(changeDue) {
+    let changeDue2 = changeDue;
     let changeArr = [];
 
     for(let i = 0; i < newCid.length; i++) {
       let value = 0;
       let [bill, quantity] = newCid[i];
 
-      while(changeDue >= bill && quantity > 0) {
-        changeDue -= bill;
+      while(changeDue2 >= bill && quantity > 0) {
+        changeDue2 -= bill;
         quantity -= 1;
         value += bill;
       }
@@ -60,7 +62,8 @@ function checkCashRegister(price, cash, cid) {
         changeArr.push([cid[i][0], value]);
       }
     }
-    if(changeArr.length > 0) {
+
+    if(changeArr.reduce((accumulator, value) => accumulator += value[1],0) === changeDue) {
       return changeArr;
     } else {
       return null;
@@ -69,6 +72,7 @@ function checkCashRegister(price, cash, cid) {
 
   // need const calc = changeFunc(changeDue)
   const change = calcChange(changeDue);
+  console.log(change);
 
 
   if(cashAvailable > changeDue) {
