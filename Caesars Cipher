@@ -1,0 +1,35 @@
+// Caesar's Cipher
+// This function takes an ROT13 string and returns the decoded version
+
+function rot13(str) { // LBH QVQ VG!
+  const rot13ToRegAlph = {
+    'A': 'N',
+    'B': 'O',
+    'C': 'P',
+    'D': 'Q',
+    'E': 'R',
+    'F': 'S',
+    'G': 'T',
+    'H': 'U',
+    'I': 'V',
+    'J': 'W',
+    'K': 'X',
+    'L': 'Y',
+    'M': 'Z',
+    'N': 'A',
+    'O': 'B',
+    'P': 'C',
+    'Q': 'D',
+    'R': 'E',
+    'S': 'F',
+    'T': 'G',
+    'U': 'H',
+    'V': 'I',
+    'W': 'J',
+    'X': 'K',
+    'Y': 'L',
+    'Z': 'M'
+  }
+
+  return str.split('').map(elem =>  rot13ToRegAlph[elem] || elem).join('');
+}
