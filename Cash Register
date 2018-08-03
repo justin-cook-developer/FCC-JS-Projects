@@ -1,0 +1,81 @@
+// Cash Register
+
+function checkCashRegister(price, cash, cid) {
+  // calculate change due
+  const changeDue = cash - price;
+  // get total cash avialable by summing cid values, and round cashAvialable to two decimal places
+  let cashAvailable = cid.reduce((accumulator, currentValue) => {
+    return accumulator += currentValue[1];
+  }, 0);
+  cashAvailable = parseFloat(cashAvailable.toFixed(2));
+
+  if(changeDue > cashAvailable) {
+    return {status: "INSUFFICIENT_FUNDS", change: []};
+  } else if(changeDue === cashAvailable) {
+    return {status: "CLOSED", change: cid};
+  }
+
+  // reverse cid to be from highest to lowest, so change will return highest to lowest
+  cid.reverse();
+
+  // need new cid
+  const newCid = cid.map(elem => {
+    const [bill, quantity] = elem;
+    if(bill ===  'ONE HUNDRED') {
+      return [100, quantity/100];
+    } else if(bill === 'TWENTY') {
+      return [20, quantity/20];
+    } else if(bill === 'TEN') {
+      return [10, quantity/10];
+    } else if(bill === 'FIVE') {
+      return [5, quantity/5];
+    } else if(bill === 'ONE') {
+      return [1, quantity];
+    } else if(bill === 'QUARTER') {
+      return [0.25, quantity/0.25];
+    } else if(bill === 'DIME') {
+      return [0.10, quantity/0.10];
+    } else if(bill === 'NICKEL') {
+      return [0.05, quantity/0.05];
+    } else if(bill === 'PENNY') {
+      return [0.01, quantity/0.01];
+    }
+  });
+
+  // need function to calculate change, if not possible, return null
+  function calcChange(changeDue) {
+    let changeArr = [];
+
+    for(let i = 0; i < newCid.length; i++) {
+      let value = 0;
+      let [bill, quantity] = newCid[i];
+
+      while(changeDue >= bill && quantity > 0) {
+        changeDue -= bill;
+        quantity -= 1;
+        value += bill;
+      }
+
+      if(value > 0) {
+        changeArr.push([cid[i][0], value]);
+      }
+    }
+    if(changeArr.length > 0) {
+      return changeArr;
+    } else {
+      return null;
+    }
+  }
+
+  // need const calc = changeFunc(changeDue)
+  const change = calcChange(changeDue);
+
+
+  if(cashAvailable > changeDue) {
+    if(change) {
+      return {status: 'OPEN', 'change': change};
+    } else {
+      return {status: "INSUFFICIENT_FUNDS", change: []};
+    }
+  }
+}
