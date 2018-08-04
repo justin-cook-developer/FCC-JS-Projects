@@ -53,7 +53,7 @@ function checkCashRegister(price, cash, cid) {
 
       while(changeDue >= bill && quantity > 0) {
         changeDue -= bill;
-        changeDue = parseFloat(changeDue.toFixed(2));   // added this in to keep changeDue2 to 2 dec places
+        changeDue = parseFloat(changeDue.toFixed(2));   // added this in to keep changeDue to 2 dec places
         quantity -= 1;                                    // I keep getting extensive decimal places, when I
         value += bill;                                    // should only get two mathematically. not sure why
       }
