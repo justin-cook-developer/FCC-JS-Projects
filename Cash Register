@@ -6,7 +6,7 @@ function checkCashRegister(price, cash, cid) {
   // get total cash avialable by summing cid values, and round cashAvialable to two decimal places
   let cashAvailable = cid.reduce((accumulator, currentValue) => {
     return accumulator += currentValue[1];
-  }, 0);
+  }, 0.00);
   cashAvailable = parseFloat(cashAvailable.toFixed(2));
 
   if(changeDue > cashAvailable) {
@@ -19,43 +19,43 @@ function checkCashRegister(price, cash, cid) {
   cid.reverse();
 
   // need new cid
+  // returns [[100, 1], [20, 3]...]
   const newCid = cid.map(elem => {
     const [bill, quantity] = elem;
     if(bill ===  'ONE HUNDRED') {
-      return [100, quantity/100];
+      return [100.00, quantity/100];
     } else if(bill === 'TWENTY') {
-      return [20, quantity/20];
+      return [20.00, quantity/20];
     } else if(bill === 'TEN') {
-      return [10, quantity/10];
+      return [10.00, quantity/10];
     } else if(bill === 'FIVE') {
-      return [5, quantity/5];
+      return [5.00, quantity/5];
     } else if(bill === 'ONE') {
-      return [1, quantity];
+      return [1.00, quantity];
     } else if(bill === 'QUARTER') {
       return [0.25, quantity/0.25];
     } else if(bill === 'DIME') {
       return [0.10, quantity/0.10];
     } else if(bill === 'NICKEL') {
-      return [0.05, Math.round(quantity / 0.05)];
+      return [0.05, Math.round(quantity/0.05)];     // applied Math.round() bc I was getiing 40.999999
     } else if(bill === 'PENNY') {
       return [0.01, quantity/0.01];
     }
   });
-  console.log(newCid);
-  
+
   // need function to calculate change, if not possible, return null
   function calcChange(changeDue) {
-    let changeDue2 = changeDue;
     let changeArr = [];
 
     for(let i = 0; i < newCid.length; i++) {
       let value = 0;
       let [bill, quantity] = newCid[i];
 
-      while(changeDue2 >= bill && quantity > 0) {
-        changeDue2 -= bill;
-        quantity -= 1;
-        value += bill;
+      while(changeDue >= bill && quantity > 0) {
+        changeDue -= bill;
+        changeDue = parseFloat(changeDue.toFixed(2));   // added this in to keep changeDue2 to 2 dec places
+        quantity -= 1;                                    // I keep getting extensive decimal places, when I
+        value += bill;                                    // should only get two mathematically. not sure why
       }
 
       if(value > 0) {
@@ -63,17 +63,16 @@ function checkCashRegister(price, cash, cid) {
       }
     }
 
-    if(changeArr.reduce((accumulator, value) => accumulator += value[1],0) === changeDue) {
+    // if able to make correct change, return changeArr, if not, return null
+    if(changeDue === 0) {
       return changeArr;
     } else {
       return null;
     }
   }
 
-  // need const calc = changeFunc(changeDue)
+  // get value for change from calcChange 
   const change = calcChange(changeDue);
-  console.log(change);
-
 
   if(cashAvailable > changeDue) {
     if(change) {
